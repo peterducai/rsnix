@@ -3,25 +3,21 @@
 
 use core::panic::PanicInfo;
 
-static RSNIX: &[u8] = b"RSNIX OS";
+mod vga_buffer;
+
+static BUILD_VERSION: u128 = 0;
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
-    //buffer is located at address 0xb8000
-    let vga_buffer = 0xb8000 as *mut u8;
-
-    for (i, &byte) in RSNIX.iter().enumerate() {
-        unsafe {
-            *vga_buffer.offset(i as isize * 2) = byte;
-            *vga_buffer.offset(i as isize * 2 + 1) = 0xb;
-        }
-    }
+    println!("RSNix OS {}", "version 0.0.1");
+    println!("{}", BUILD_VERSION);
 
     loop {}
 }
 
 /// This function is called on panic.
 #[panic_handler]
-fn panic(_info: &PanicInfo) -> ! {
+fn panic(info: &PanicInfo) -> ! {
+    println!("{}", info);
     loop {}
 }
