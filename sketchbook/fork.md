@@ -95,3 +95,33 @@ Therefore I am not so convinced that we want a constructor. It gets in the way o
 
 Links: glibc/fork ng
 Copyright © 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018 The Contributing Authors	License: GFDL 1.2+	Last edited 2010-11-30 09:39:28 UTC
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------
+
+Canonical Process Destruction
+
+Process destruction can be done either cooperatively, or forcibly.
+The difference corresponds approximately to the difference between
+SIGTERM and SIGKILL in Unix.  To destroy a process cooperatively, a
+request message is sent to a special capability implemented by the
+child process.  The child can then begin to tear down the program, and
+at some time send a request back to the parent process to ask for
+forced process destruction.
+
+Forced process destruction can be done by the parent process without
+any cooperation by the child process.  The parent process simply
+destroys the primary container of the child (this means that the
+parent process should retain the primary container capability).
+
+Because container destruction works recursively, forced process
+destruction works recursively as well.
